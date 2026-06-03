@@ -5,8 +5,6 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import type { NewsItem } from "@/types/news";
-import { useBookmarks } from "@/hooks/use-bookmarks";
-
 function timeAgo(dateStr: string): string {
   const date = new Date(dateStr.replace(" UTC", "Z"));
   const diff = Date.now() - date.getTime();
@@ -31,10 +29,11 @@ function handleBookmark(e: React.MouseEvent, id: number, toggle: (id: number) =>
 interface NewsCardProps {
   item: NewsItem;
   variant?: "compact" | "hero";
+  isBookmarked: (id: number) => boolean;
+  onToggleBookmark: (id: number) => void;
 }
 
-export function NewsCard({ item, variant = "compact" }: NewsCardProps) {
-  const { isBookmarked, toggleBookmark } = useBookmarks();
+export function NewsCard({ item, variant = "compact", isBookmarked, onToggleBookmark }: NewsCardProps) {
   const bookmarked = isBookmarked(item.id);
   const hasUrl = !!item.url;
   const Wrapper = hasUrl ? "a" : "div";
@@ -69,7 +68,7 @@ export function NewsCard({ item, variant = "compact" }: NewsCardProps) {
               <Button
                 variant="ghost"
                 size="icon"
-                onClick={(e) => handleBookmark(e, item.id, toggleBookmark)}
+                onClick={(e) => handleBookmark(e, item.id, onToggleBookmark)}
                 className={cn("ml-auto", bookmarked && "text-orange-500")}
               >
                 <Bookmark className={cn("size-5", bookmarked && "fill-current")} />
@@ -109,7 +108,7 @@ export function NewsCard({ item, variant = "compact" }: NewsCardProps) {
             <Button
               variant="ghost"
               size="icon"
-              onClick={(e) => handleBookmark(e, item.id, toggleBookmark)}
+              onClick={(e) => handleBookmark(e, item.id, onToggleBookmark)}
               className={cn("size-7", bookmarked && "text-orange-500")}
             >
               <Bookmark className={cn("size-4", bookmarked && "fill-current")} />

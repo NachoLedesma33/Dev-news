@@ -10,7 +10,7 @@ export default function Home() {
   const { items, loading, error } = useNews();
   const [showBookmarks, setShowBookmarks] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-  const { bookmarks } = useBookmarks();
+  const { bookmarks, isBookmarked, toggleBookmark } = useBookmarks();
 
   const filtered = useMemo(() => {
     let result = items;
@@ -77,7 +77,7 @@ export default function Home() {
                 <span className="mb-3 block text-xs font-semibold uppercase tracking-wider text-muted-foreground">
                   Top story
                 </span>
-                <NewsCard item={hero} variant="hero" />
+                <NewsCard item={hero} variant="hero" isBookmarked={isBookmarked} onToggleBookmark={toggleBookmark} />
               </section>
             )}
 
@@ -87,7 +87,7 @@ export default function Home() {
               </span>
               <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                 {rest.map((item) => (
-                  <NewsCard key={item.id} item={item} />
+                  <NewsCard key={item.id} item={item} isBookmarked={isBookmarked} onToggleBookmark={toggleBookmark} />
                 ))}
               </div>
             </section>
