@@ -48,7 +48,7 @@ export async function GET() {
 
     const stories: NewsItem[] = items
       .filter((item): item is HnItem => item !== null && item.type === "story" && !!item.title)
-      .sort((a, b) => (b.score ?? 0) - (a.score ?? 0))
+      .sort((a, b) => (b.time ?? 0) - (a.time ?? 0))
       .map((item) => ({
         id: item.id,
         title: item.title!,
