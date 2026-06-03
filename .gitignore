@@ -25,6 +25,10 @@ report.[0-9]_.[0-9]_.[0-9]_.[0-9]_.json
 # next.js
 .next
 
+# python
+__pycache__/
+*.pyc
+
 # caches
 .eslintcache
 .cache
