@@ -3,34 +3,51 @@
 import { useState, useMemo } from "react";
 import { Navbar } from "@/components/navbar";
 import { NewsCard } from "@/components/news-card";
-import { mockNews } from "@/lib/mock-data";
 import { useBookmarks } from "@/hooks/use-bookmarks";
+import { useNews } from "@/hooks/use-news";
 
 export default function Home() {
+  const { items, loading, error } = useNews();
   const [showBookmarks, setShowBookmarks] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const { bookmarks } = useBookmarks();
 
   const filtered = useMemo(() => {
-    let items = mockNews;
+    let result = items;
 
     if (showBookmarks) {
-      items = items.filter((n) => bookmarks.has(n.id));
+      result = result.filter((n) => bookmarks.has(n.id));
     }
 
     if (searchQuery.trim()) {
       const q = searchQuery.toLowerCase();
-      items = items.filter(
+      result = result.filter(
         (n) =>
           n.title.toLowerCase().includes(q) ||
           n.author.toLowerCase().includes(q)
       );
     }
 
-    return items;
-  }, [showBookmarks, searchQuery, bookmarks]);
+    return result;
+  }, [showBookmarks, searchQuery, bookmarks, items]);
 
   const [hero, ...rest] = filtered;
+
+  if (loading) {
+    return (
+      <div className="min-h-screen">
+        <Navbar
+          showBookmarks={showBookmarks}
+          onToggleBookmarks={() => setShowBookmarks((v) => !v)}
+          searchQuery={searchQuery}
+          onSearchChange={setSearchQuery}
+        />
+        <main className="mx-auto max-w-6xl px-4 py-20 text-center text-muted-foreground">
+          <p className="text-lg">Loading stories...</p>
+        </main>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen">
@@ -42,6 +59,12 @@ export default function Home() {
       />
 
       <main className="mx-auto max-w-6xl px-4 py-6">
+        {error && (
+          <div className="mb-4 rounded-md border border-amber-200 bg-amber-50 px-4 py-2 text-sm text-amber-700">
+            Using offline data — API unavailable ({error})
+          </div>
+        )}
+
         {filtered.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-20 text-muted-foreground">
             <p className="text-lg font-medium">No stories found</p>

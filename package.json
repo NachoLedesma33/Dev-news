@@ -6,6 +6,7 @@
   "type": "module",
   "scripts": {
     "dev": "next dev",
+    "dev:api": "cd api && uvicorn hn_app.main:app --reload --port 8000",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
