@@ -35,7 +35,7 @@ export default function Home() {
 
   if (loading) {
     return (
-      <div className="min-h-screen">
+      <div>
         <Navbar
           showBookmarks={showBookmarks}
           onToggleBookmarks={() => setShowBookmarks((v) => !v)}
@@ -50,7 +50,7 @@ export default function Home() {
   }
 
   return (
-    <div className="min-h-screen">
+    <div>
       <Navbar
         showBookmarks={showBookmarks}
         onToggleBookmarks={() => setShowBookmarks((v) => !v)}
