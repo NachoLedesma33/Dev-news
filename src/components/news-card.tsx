@@ -18,8 +18,8 @@ function timeAgo(dateStr: string): string {
   return `${days}d ago`;
 }
 
-function articleUrl(item: NewsItem): string {
-  return item.url ?? `https://news.ycombinator.com/item?id=${item.id}`;
+function hnDiscussionUrl(item: NewsItem): string {
+  return `https://news.ycombinator.com/item?id=${item.id}`;
 }
 
 function handleBookmark(e: React.MouseEvent, id: number, toggle: (id: number) => void) {
@@ -36,11 +36,15 @@ interface NewsCardProps {
 export function NewsCard({ item, variant = "compact" }: NewsCardProps) {
   const { isBookmarked, toggleBookmark } = useBookmarks();
   const bookmarked = isBookmarked(item.id);
-  const href = articleUrl(item);
+  const hasUrl = !!item.url;
+  const Wrapper = hasUrl ? "a" : "div";
+  const wrapperProps = hasUrl
+    ? { href: item.url, target: "_blank", rel: "noopener noreferrer" as const, className: "block" }
+    : { className: "block" };
 
   if (variant === "hero") {
     return (
-      <a href={href} target="_blank" rel="noopener noreferrer" className="block">
+      <Wrapper {...(wrapperProps as any)}>
         <Card className="overflow-hidden border-0 bg-gradient-to-br from-orange-50 to-amber-50 dark:from-orange-950/20 dark:to-amber-950/20 transition-shadow hover:shadow-md">
           <CardContent className="p-6 md:p-8">
             <div className="mb-2 flex items-center gap-2 text-sm text-muted-foreground">
@@ -73,12 +77,12 @@ export function NewsCard({ item, variant = "compact" }: NewsCardProps) {
             </div>
           </CardContent>
         </Card>
-      </a>
+      </Wrapper>
     );
   }
 
   return (
-    <a href={href} target="_blank" rel="noopener noreferrer" className="block">
+    <Wrapper {...(wrapperProps as any)}>
       <Card className="group transition-shadow hover:shadow-md">
         <CardContent className="p-4">
           <div className="mb-1 flex items-center gap-2 text-xs text-muted-foreground">
@@ -113,6 +117,6 @@ export function NewsCard({ item, variant = "compact" }: NewsCardProps) {
           </div>
         </CardContent>
       </Card>
-    </a>
+    </Wrapper>
   );
 }
