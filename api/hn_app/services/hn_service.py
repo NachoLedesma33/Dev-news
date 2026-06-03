@@ -51,5 +51,5 @@ async def get_top_stories(limit: int = 30) -> list[dict]:
 
     items = [r for r in results if r is not None]
 
-    items.sort(key=lambda x: x.get("score", 0), reverse=True)
+    items.sort(key=lambda x: x.get("time", 0), reverse=True)
     return items
