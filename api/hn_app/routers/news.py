@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 
-from api.schemas.news import NewsItem
-from api.services.hn_service import get_top_stories
+from hn_app.schemas.news import NewsItem
+from hn_app.services.hn_service import get_top_stories
 
 router = APIRouter(prefix="/api", tags=["news"])
 
