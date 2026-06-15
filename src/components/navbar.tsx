@@ -27,6 +27,7 @@ export function Navbar({ showBookmarks, onToggleBookmarks, searchQuery, onSearch
             value={searchQuery}
             onChange={(e) => onSearchChange(e.target.value)}
             className="h-9 pl-9"
+            aria-label="Search stories"
           />
         </div>
 
@@ -35,7 +36,8 @@ export function Navbar({ showBookmarks, onToggleBookmarks, searchQuery, onSearch
           size="icon"
           onClick={onToggleBookmarks}
           className={cn(showBookmarks && "text-orange-500")}
-          title={showBookmarks ? "Show all stories" : "Show bookmarked stories"}
+          aria-pressed={showBookmarks}
+          aria-label={showBookmarks ? "Show all stories" : "Show bookmarked stories"}
         >
           <Bookmark className="size-5" />
         </Button>

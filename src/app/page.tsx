@@ -46,8 +46,13 @@ export default function Home() {
           searchQuery={searchInput}
           onSearchChange={setSearchInput}
         />
-        <main className="mx-auto max-w-6xl px-4 py-20 text-center text-muted-foreground">
-          <p className="text-lg">Loading stories...</p>
+        <main className="mx-auto max-w-6xl px-4 py-6">
+          <div className="mb-8 h-64 animate-pulse rounded-xl bg-muted" />
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {Array.from({ length: 9 }).map((_, i) => (
+              <div key={i} className="h-36 animate-pulse rounded-xl bg-muted" />
+            ))}
+          </div>
         </main>
       </div>
     );
@@ -78,17 +83,17 @@ export default function Home() {
           <>
             {hero && (
               <section className="mb-8">
-                <span className="mb-3 block text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                <h2 className="mb-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
                   Top story
-                </span>
+                </h2>
                 <NewsCard item={hero} variant="hero" bookmarked={bookmarks.has(hero.id)} onToggleBookmark={toggleBookmark} />
               </section>
             )}
 
             <section>
-              <span className="mb-3 block text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+              <h3 className="mb-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
                 Latest stories
-              </span>
+              </h3>
               <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                 {rest.map((item) => (
                   <NewsCard key={item.id} item={item} bookmarked={bookmarks.has(item.id)} onToggleBookmark={toggleBookmark} />

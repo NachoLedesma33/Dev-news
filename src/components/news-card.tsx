@@ -8,6 +8,7 @@ import { cn } from "@/lib/utils";
 import type { NewsItem } from "@/types/news";
 
 function timeAgo(dateStr: string): string {
+  if (!dateStr) return "unknown";
   const date = new Date(dateStr.replace(" UTC", "Z"));
   const diff = Date.now() - date.getTime();
   if (diff < 0) return "just now";
@@ -60,6 +61,7 @@ function HeroCard({ item, bookmarked, onToggleBookmark }: { item: NewsItem; book
             size="icon"
             onClick={(e) => handleBookmark(e, item.id, onToggleBookmark)}
             className={cn("ml-auto", bookmarked && "text-orange-500")}
+            aria-label={bookmarked ? "Remove bookmark" : "Add bookmark"}
           >
             <Bookmark className={cn("size-5", bookmarked && "fill-current")} />
           </Button>
@@ -99,6 +101,7 @@ function CompactCard({ item, bookmarked, onToggleBookmark }: { item: NewsItem; b
             size="icon"
             onClick={(e) => handleBookmark(e, item.id, onToggleBookmark)}
             className={cn("size-7", bookmarked && "text-orange-500")}
+            aria-label={bookmarked ? "Remove bookmark" : "Add bookmark"}
           >
             <Bookmark className={cn("size-4", bookmarked && "fill-current")} />
           </Button>
