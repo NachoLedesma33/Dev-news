@@ -15,7 +15,11 @@ function loadBookmarks(): Set<number> {
 }
 
 function saveBookmarks(ids: Set<number>) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify([...ids]));
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify([...ids]));
+  } catch {
+    console.warn("Failed to save bookmarks to localStorage");
+  }
 }
 
 export function useBookmarks() {
