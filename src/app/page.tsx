@@ -1,16 +1,20 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useCallback } from "react";
 import { Navbar } from "@/components/navbar";
 import { NewsCard } from "@/components/news-card";
 import { useBookmarks } from "@/hooks/use-bookmarks";
 import { useNews } from "@/hooks/use-news";
+import { useDebounce } from "@/hooks/use-debounce";
 
 export default function Home() {
   const { items, loading, error } = useNews();
   const [showBookmarks, setShowBookmarks] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("");
-  const { bookmarks, isBookmarked, toggleBookmark } = useBookmarks();
+  const [searchInput, setSearchInput] = useState("");
+  const searchQuery = useDebounce(searchInput, 300);
+  const { bookmarks, toggleBookmark } = useBookmarks();
+
+  const onToggleBookmarks = useCallback(() => setShowBookmarks((v) => !v), []);
 
   const filtered = useMemo(() => {
     let result = items;
@@ -38,9 +42,9 @@ export default function Home() {
       <div>
         <Navbar
           showBookmarks={showBookmarks}
-          onToggleBookmarks={() => setShowBookmarks((v) => !v)}
-          searchQuery={searchQuery}
-          onSearchChange={setSearchQuery}
+          onToggleBookmarks={onToggleBookmarks}
+          searchQuery={searchInput}
+          onSearchChange={setSearchInput}
         />
         <main className="mx-auto max-w-6xl px-4 py-20 text-center text-muted-foreground">
           <p className="text-lg">Loading stories...</p>
@@ -53,9 +57,9 @@ export default function Home() {
     <div>
       <Navbar
         showBookmarks={showBookmarks}
-        onToggleBookmarks={() => setShowBookmarks((v) => !v)}
-        searchQuery={searchQuery}
-        onSearchChange={setSearchQuery}
+        onToggleBookmarks={onToggleBookmarks}
+        searchQuery={searchInput}
+        onSearchChange={setSearchInput}
       />
 
       <main className="mx-auto max-w-6xl px-4 py-6">
@@ -77,7 +81,7 @@ export default function Home() {
                 <span className="mb-3 block text-xs font-semibold uppercase tracking-wider text-muted-foreground">
                   Top story
                 </span>
-                <NewsCard item={hero} variant="hero" isBookmarked={isBookmarked} onToggleBookmark={toggleBookmark} />
+                <NewsCard item={hero} variant="hero" bookmarked={bookmarks.has(hero.id)} onToggleBookmark={toggleBookmark} />
               </section>
             )}
 
@@ -87,7 +91,7 @@ export default function Home() {
               </span>
               <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                 {rest.map((item) => (
-                  <NewsCard key={item.id} item={item} isBookmarked={isBookmarked} onToggleBookmark={toggleBookmark} />
+                  <NewsCard key={item.id} item={item} bookmarked={bookmarks.has(item.id)} onToggleBookmark={toggleBookmark} />
                 ))}
               </div>
             </section>

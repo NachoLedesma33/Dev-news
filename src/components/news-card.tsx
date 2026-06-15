@@ -1,5 +1,6 @@
 "use client";
 
+import { memo } from "react";
 import { Bookmark, Clock, MessageSquare, ArrowUp } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -27,7 +28,7 @@ function handleBookmark(e: React.MouseEvent, id: number, toggle: (id: number) =>
 interface NewsCardProps {
   item: NewsItem;
   variant?: "compact" | "hero";
-  isBookmarked: (id: number) => boolean;
+  bookmarked: boolean;
   onToggleBookmark: (id: number) => void;
 }
 
@@ -107,8 +108,7 @@ function CompactCard({ item, bookmarked, onToggleBookmark }: { item: NewsItem; b
   );
 }
 
-export function NewsCard({ item, variant = "compact", isBookmarked, onToggleBookmark }: NewsCardProps) {
-  const bookmarked = isBookmarked(item.id);
+const NewsCard = memo(function NewsCard({ item, variant = "compact", bookmarked, onToggleBookmark }: NewsCardProps) {
   const card = variant === "hero"
     ? <HeroCard item={item} bookmarked={bookmarked} onToggleBookmark={onToggleBookmark} />
     : <CompactCard item={item} bookmarked={bookmarked} onToggleBookmark={onToggleBookmark} />;
@@ -122,4 +122,6 @@ export function NewsCard({ item, variant = "compact", isBookmarked, onToggleBook
   }
 
   return <div className="block">{card}</div>;
-}
+});
+
+export { NewsCard };

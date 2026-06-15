@@ -21,4 +21,5 @@ async def list_news():
             comments=item.get("descendants", 0),
         )
         for item in raw
+        if item.get("id") and item.get("title")
     ]
