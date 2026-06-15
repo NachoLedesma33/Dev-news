@@ -1,9 +1,10 @@
 "use client";
 
-import { Bookmark, Search } from "lucide-react";
+import { Bookmark, Search, Moon, Sun } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
+import { useTheme } from "@/hooks/use-theme";
 
 interface NavbarProps {
   showBookmarks: boolean;
@@ -13,6 +14,8 @@ interface NavbarProps {
 }
 
 export function Navbar({ showBookmarks, onToggleBookmarks, searchQuery, onSearchChange }: NavbarProps) {
+  const { theme, toggleTheme } = useTheme();
+
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="mx-auto flex h-14 max-w-6xl items-center gap-4 px-4">
@@ -30,6 +33,15 @@ export function Navbar({ showBookmarks, onToggleBookmarks, searchQuery, onSearch
             aria-label="Search stories"
           />
         </div>
+
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={toggleTheme}
+          aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
+        >
+          {theme === "dark" ? <Sun className="size-5" /> : <Moon className="size-5" />}
+        </Button>
 
         <Button
           variant="ghost"

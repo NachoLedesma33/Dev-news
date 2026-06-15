@@ -16,7 +16,8 @@
     "react-dom": "^19",
     "lucide-react": "^0.510.0",
     "clsx": "^2",
-    "tailwind-merge": "^3"
+    "tailwind-merge": "^3",
+    "sharp": "^0.34"
   },
   "devDependencies": {
     "@types/node": "^22",
