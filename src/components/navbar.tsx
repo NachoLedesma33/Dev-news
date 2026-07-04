@@ -24,8 +24,6 @@ export function Navbar({ showBookmarks, onToggleBookmarks, searchQuery, onSearch
           Dev<span className="text-orange-500">news</span>
         </a>
 
-        <span className="hidden sm:inline text-xs text-muted-foreground/60 select-none">root &gt; latest_news</span>
-
         <div className="relative ml-auto max-w-sm flex-1">
           <Search className="absolute left-2.5 top-1/2 size-3.5 -translate-y-1/2 text-muted-foreground" strokeWidth={sw} />
           <Input

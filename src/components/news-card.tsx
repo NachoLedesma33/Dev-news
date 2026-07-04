@@ -4,21 +4,9 @@ import { memo } from "react";
 import { Bookmark, Clock, MessageSquare, ArrowUp } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
+import { cn, timeAgo } from "@/lib/utils";
+import { AnimatedNumber } from "@/components/animated-number";
 import type { NewsItem } from "@/types/news";
-
-function timeAgo(dateStr: string): string {
-  if (!dateStr) return "unknown";
-  const date = new Date(dateStr.replace(" UTC", "Z"));
-  const diff = Date.now() - date.getTime();
-  if (diff < 0) return "just now";
-  const mins = Math.floor(diff / 60000);
-  if (mins < 60) return `${mins}m ago`;
-  const hrs = Math.floor(mins / 60);
-  if (hrs < 24) return `${hrs}h ago`;
-  const days = Math.floor(hrs / 24);
-  return `${days}d ago`;
-}
 
 function handleBookmark(e: React.MouseEvent, id: number, toggle: (id: number) => void) {
   e.preventDefault();
@@ -35,11 +23,11 @@ interface NewsCardProps {
 
 function HeroCard({ item, bookmarked, onToggleBookmark }: { item: NewsItem; bookmarked: boolean; onToggleBookmark: (id: number) => void }) {
   return (
-    <Card className="overflow-hidden border-0 bg-gradient-to-br from-orange-50 to-amber-50 dark:from-orange-950/20 dark:to-amber-950/20 transition-shadow hover:shadow-md">
+    <Card className="overflow-hidden border-0 bg-gradient-to-br from-orange-50 to-amber-50 dark:from-orange-950/20 dark:to-amber-950/20 transition-all hover:shadow-md hover:scale-[1.003]">
       <CardContent className="p-6 md:p-8">
         <div className="mb-2 flex items-center gap-2 text-sm text-muted-foreground">
           <ArrowUp className="size-4 text-orange-500" />
-          <span className="font-medium text-orange-600">{item.points} points</span>
+          <span className="font-medium text-orange-600"><AnimatedNumber value={item.points} /> points</span>
           <span>·</span>
           <span>by {item.author}</span>
         </div>
@@ -73,29 +61,35 @@ function HeroCard({ item, bookmarked, onToggleBookmark }: { item: NewsItem; book
 
 function CompactCard({ item, bookmarked, onToggleBookmark }: { item: NewsItem; bookmarked: boolean; onToggleBookmark: (id: number) => void }) {
   return (
-    <Card className="group transition-shadow hover:shadow-md">
-      <CardContent className="p-4">
-        <div className="mb-1 flex items-center gap-2 text-xs text-muted-foreground">
-          <span className="flex items-center gap-1">
-            <ArrowUp className="size-3 text-orange-500" />
+    <Card className="group h-full transition-all hover:shadow-md hover:border-orange-200 dark:hover:border-orange-800">
+      <CardContent className="flex h-full flex-col p-4">
+        <div className="mb-2 flex items-center gap-2 text-xs text-muted-foreground flex-wrap">
+          <span className="inline-flex items-center gap-1 font-medium text-orange-500">
+            <ArrowUp className="size-3.5" />
             {item.points}
           </span>
-          <span>·</span>
+          <span className="text-muted-foreground/30">|</span>
           <span>{item.author}</span>
-          <span>·</span>
-          <span className="flex items-center gap-1">
+          <span className="text-muted-foreground/30">|</span>
+          <span className="inline-flex items-center gap-1">
             <Clock className="size-3" />
             {timeAgo(item.published)}
           </span>
-        </div>
-        <h3 className="mb-2 text-sm font-semibold leading-snug group-hover:text-orange-600 transition-colors text-foreground">
-          {item.title}
-        </h3>
-        <div className="flex items-center justify-between text-xs text-muted-foreground">
-          <span className="flex items-center gap-1">
+          <span className="text-muted-foreground/30">|</span>
+          <span className="inline-flex items-center gap-1">
             <MessageSquare className="size-3" />
             {item.comments}
           </span>
+        </div>
+        <div className="grow">
+          <h3 className="mb-1.5 text-base font-semibold leading-snug group-hover:text-orange-600 transition-colors text-foreground">
+            {item.title}
+          </h3>
+          {item.text && (
+            <p className="text-xs text-muted-foreground line-clamp-2">{item.text}</p>
+          )}
+        </div>
+        <div className="flex items-center justify-end pt-2">
           <Button
             variant="ghost"
             size="icon"
@@ -118,13 +112,13 @@ const NewsCard = memo(function NewsCard({ item, variant = "compact", bookmarked,
 
   if (item.url) {
     return (
-      <a href={item.url} target="_blank" rel="noopener noreferrer" className="block">
+      <a href={item.url} target="_blank" rel="noopener noreferrer" className="block h-full">
         {card}
       </a>
     );
   }
 
-  return <div className="block">{card}</div>;
+  return <div className="h-full">{card}</div>;
 });
 
 export { NewsCard };

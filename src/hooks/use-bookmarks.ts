@@ -25,8 +25,6 @@ function saveBookmarks(ids: Set<number>) {
 export function useBookmarks() {
   const [bookmarks, setBookmarks] = useState<Set<number>>(loadBookmarks);
 
-  const isBookmarked = useCallback((id: number) => bookmarks.has(id), [bookmarks]);
-
   const toggleBookmark = useCallback((id: number) => {
     setBookmarks((prev) => {
       const next = new Set(prev);
@@ -37,5 +35,5 @@ export function useBookmarks() {
     });
   }, []);
 
-  return { bookmarks, isBookmarked, toggleBookmark };
+  return { bookmarks, toggleBookmark };
 }
