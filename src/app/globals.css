@@ -1,8 +1,12 @@
+@import url("https://fonts.googleapis.com/css2?family=Fira+Sans:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap");
 @import "tailwindcss";
 
 @custom-variant dark (&:is(.dark *));
 
 @theme {
+  --font-heading: "Space Grotesk", sans-serif;
+  --font-body: "Fira Sans", sans-serif;
+
   --color-background: hsl(0 0% 100%);
   --color-foreground: hsl(222.2 84% 4.9%);
   --color-card: hsl(0 0% 100%);
@@ -19,11 +23,11 @@
   --color-accent-foreground: hsl(222.2 47.4% 11.2%);
   --color-destructive: hsl(0 84.2% 60.2%);
   --color-destructive-foreground: hsl(210 40% 98%);
-  --color-border: hsl(214.3 31.8% 91.4%);
+  --color-border: #C0C0C0;
   --color-input: hsl(214.3 31.8% 91.4%);
   --color-ring: hsl(222.2 84% 4.9%);
   --radius-sm: 0.5rem;
-  --radius-md: 0.5rem;
+  --radius-md: 6px;
   --radius-lg: 0.5rem;
 }
 
@@ -44,7 +48,7 @@
   --color-accent-foreground: hsl(210 40% 98%);
   --color-destructive: hsl(0 62.8% 30.6%);
   --color-destructive-foreground: hsl(210 40% 98%);
-  --color-border: hsl(217.2 32.6% 17.5%);
+  --color-border: #404040;
   --color-input: hsl(217.2 32.6% 17.5%);
   --color-ring: hsl(212.7 26.8% 83.9%);
 }
@@ -56,5 +60,14 @@
 body {
   background-color: var(--color-background);
   color: var(--color-foreground);
-  font-family: system-ui, -apple-system, sans-serif;
+  font-family: var(--font-body);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+}
+
+.border-dashed-grid {
+  border-style: dashed;
+  border-color: var(--color-border);
 }
